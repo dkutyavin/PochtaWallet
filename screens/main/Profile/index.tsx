@@ -5,7 +5,7 @@ import { Layout, Text } from '@ui-kitten/components'
 import { usePassportFromStore } from '../../../utils/useUserFromStore'
 import { SplashScreen } from '../../../components/splash'
 import { VCList } from './components/VCList'
-import { Group } from './components/Group'
+import { Group } from './components'
 
 export function Profile(props: MainScreenProps<'Profile'>) {
   const { passport, isLoading } = usePassportFromStore()
