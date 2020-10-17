@@ -33,7 +33,7 @@ export async function fetchHandler(
 
   if (!response.ok) {
     const data = await response.json()
-    console.log({ url, message: data?.message, token, body })
+    console.warn({ url, message: data?.message, token, body })
     throw new Error(data?.message)
   }
 
