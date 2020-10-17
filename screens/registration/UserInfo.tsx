@@ -19,8 +19,6 @@ export function UserInfo(props: RegistrationScreenProps<'Greetings'>) {
     const newUser = { ...user, ...data, biometricPublicKey }
     const result = await networkAPI.issueDID(newUser)
 
-    console.log({ newUser, result })
-
     saveToUser({ ...data, challenge: result.challenge })
 
     props.navigation.push('PhoneVerify')

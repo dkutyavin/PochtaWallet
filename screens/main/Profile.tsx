@@ -7,30 +7,30 @@ import { useAppState } from '../../app/state'
 export function Profile(props: MainScreenProps<'Profile'>) {
   const { user } = useAppState()
 
+  React.useEffect(() => {})
+
   return (
     <Layout style={styles.container}>
-      <ScrollView>
-        <View style={styles.panel}>
-          <Text style={{ fontSize: 22, fontWeight: '500', marginBottom: 6, color: '#858585' }}>
-            Пользователь
-          </Text>
-          <Divider style={{ marginTop: 10 }} />
+      <View style={styles.panel}>
+        <Text style={{ fontSize: 22, fontWeight: '500', marginBottom: 6, color: '#858585' }}>
+          Пользователь
+        </Text>
+        <Divider style={{ marginTop: 10 }} />
 
-          <DataItem label="Фамилия" info={user.lastName} />
-          <DataItem label="Имя" info={user.firstName} />
-          <DataItem label="Отчество" info={user.patronymic} />
-          <DataItem label="Прочие данные" info={user.otherInfo} />
-        </View>
+        <DataItem label="Фамилия" info={user.lastName} />
+        <DataItem label="Имя" info={user.firstName} />
+        <DataItem label="Отчество" info={user.patronymic} />
+        <DataItem label="Прочие данные" info={user.otherInfo} />
+      </View>
 
-        <View style={{ ...styles.panel, minHeight: 220, justifyContent: 'flex-start', flex: 0 }}>
-          <Text style={{ fontSize: 22, fontWeight: '500', marginBottom: 6, color: '#858585' }}>
-            Удостоверения личности
-          </Text>
-          <Divider style={{ marginTop: 10 }} />
+      <View style={{ ...styles.panel, minHeight: 220, justifyContent: 'flex-start', flex: 0 }}>
+        <Text style={{ fontSize: 22, fontWeight: '500', marginBottom: 6, color: '#858585' }}>
+          Удостоверения личности
+        </Text>
+        <Divider style={{ marginTop: 10 }} />
 
-          <ListAccessoriesShowcase />
-        </View>
-      </ScrollView>
+        <ListAccessoriesShowcase />
+      </View>
     </Layout>
   )
 }

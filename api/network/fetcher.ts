@@ -1,17 +1,26 @@
+import * as storageAPI from '../storage'
+
 export const fetcher = {
   get: (url: string) => fetchHandler(url, undefined, { method: 'GET' }),
-  post: (url: string, body?: Record<string, any>) => fetchHandler(url, body, { method: 'POST' }),
+  post: (url: string, body?: Record<string, any>, noData = false) =>
+    fetchHandler(url, body, { method: 'POST' }, noData),
 }
 
 export async function fetchHandler(
   url: string,
   requestBody?: Record<string, any>,
-  options?: RequestInit
+  options?: RequestInit,
+  noData = false
 ) {
   const body = requestBody ? JSON.stringify(requestBody) : undefined
 
-  const headers = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+  }
+
+  const token = await storageAPI.getToken()
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
   }
 
   const requestOptions = {
@@ -20,18 +29,17 @@ export async function fetchHandler(
     ...options,
   }
 
-  console.log(requestOptions)
-
   const response = await fetch(url, requestOptions)
 
-  {
-    console.log(response)
+  if (!response.ok) {
+    const data = await response.json()
+    console.log({ url, message: data?.message, token, body })
+    throw new Error(data?.message)
   }
+
+  if (noData) return response
+
   const data = await response.json()
-
-  console.log({ data })
-
-  if (!response.ok) throw new Error(data?.message)
 
   return data
 }

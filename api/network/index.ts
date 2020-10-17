@@ -1,8 +1,15 @@
 import { AUTH_SECRET, PUBLIC_KEY } from './config'
-import { AUTH_URL, ISSUE_DID_URL, ACTIVATE_DID_URL } from './endpoints'
+import {
+  AUTH_URL,
+  ISSUE_DID_URL,
+  ACTIVATE_DID_URL,
+  VC_URL,
+  VC_DETAILS,
+  VC_CHALLENGE,
+  VC_SIGN_CHALLENGE,
+} from './endpoints'
 import { fetcher, fetchHandler } from './fetcher'
-
-let jwt: string
+import * as storageAPI from '../storage'
 
 export async function issueDID(user: any) {
   const res = await fetcher.post(ISSUE_DID_URL, { ...user, publicKey: PUBLIC_KEY })
@@ -32,6 +39,21 @@ export async function login(username: string, password: string) {
     }
   )
 
-  // jwt = response.access_token
-  // console.log({ jwt })
+  storageAPI.setToken(response.access_token)
+}
+
+export function getAllMyVCs() {
+  return fetcher.get(VC_URL)
+}
+
+export function getVcDetails(id: string) {
+  return fetcher.get(VC_DETAILS(id))
+}
+
+export function getVcChallenge(id: string) {
+  return fetcher.get(VC_CHALLENGE(id))
+}
+
+export function signVcChallenge(id: string, signedChallenge: string) {
+  return fetcher.post(VC_SIGN_CHALLENGE(id), { signedChallenge }, true)
 }
