@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { MainScreenProps } from '../../../types/navigation'
-import { Layout, Text } from '@ui-kitten/components'
+import { Layout } from '@ui-kitten/components'
 import { usePassportFromStore } from '../../../utils/useUserFromStore'
 import { SplashScreen } from '../../../components/splash'
 import { VCList } from './components/VCList'
-import { Group } from './components'
+import { DataItem, Group } from './components'
 
 export function Profile(props: MainScreenProps<'Profile'>) {
   const { passport, isLoading } = usePassportFromStore()
@@ -28,6 +28,8 @@ export function Profile(props: MainScreenProps<'Profile'>) {
         <DataItem label="Отчество" info={patronymic} />
         <DataItem label="Прочие данные" info={user.otherInfo} />
       </Group>
+
+      <Group title="Информация о подписи"></Group>
 
       <Group title="Удостоверения личности">
         <VCList />
@@ -54,12 +56,3 @@ export const styles = StyleSheet.create({
     color: '#858585',
   },
 })
-
-export function DataItem({ label, info }: { label: string; info: string }) {
-  return (
-    <View style={{ justifyContent: 'space-between', marginBottom: 10 }}>
-      <Text style={{ color: '#858585', fontSize: 18, fontWeight: '300' }}>{label}</Text>
-      <Text category="h5">{info || '--'}</Text>
-    </View>
-  )
-}

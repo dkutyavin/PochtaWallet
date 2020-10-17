@@ -15,3 +15,12 @@ export function Group({ title, children }: PropsWithChildren<{ title: string }>)
     </View>
   )
 }
+
+export function DataItem({ label, info }: { label: string; info: string }) {
+  return (
+    <View style={{ justifyContent: 'space-between', marginBottom: 10 }}>
+      <Text style={{ color: '#858585', fontSize: 18, fontWeight: '300' }}>{label}</Text>
+      <Text category="h5">{info || '--'}</Text>
+    </View>
+  )
+}
