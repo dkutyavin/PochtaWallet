@@ -1,9 +1,11 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { MainScreenProps } from '../../types/navigation'
-import { Layout, Text, Divider, Icon, ListItem, List } from '@ui-kitten/components'
-import { usePassportFromStore } from '../../utils/useUserFromStore'
-import { SplashScreen } from '../../components/splash'
+import { MainScreenProps } from '../../../types/navigation'
+import { Layout, Text } from '@ui-kitten/components'
+import { usePassportFromStore } from '../../../utils/useUserFromStore'
+import { SplashScreen } from '../../../components/splash'
+import { VCList } from './components/VCList'
+import { Group } from './components/Group'
 
 export function Profile(props: MainScreenProps<'Profile'>) {
   const { passport, isLoading } = usePassportFromStore()
@@ -34,32 +36,7 @@ export function Profile(props: MainScreenProps<'Profile'>) {
   )
 }
 
-const VCList = () => {
-  const passport = [{ title: 'Выдан: Почта России', description: 'Тип документа: Паспорт РФ' }]
-
-  const renderItemIcon = (props: any) => <Icon {...props} name="person" />
-
-  const renderItem = ({ item }: any) => (
-    <ListItem title={item.title} description={item.description} accessoryLeft={renderItemIcon} />
-  )
-
-  return <List style={{ backgroundColor: 'white' }} data={passport} renderItem={renderItem} />
-}
-
-function Group({ title, children }: PropsWithChildren<{ title: string }>) {
-  return (
-    <View style={styles.panel}>
-      <Text category="h4" style={styles.title}>
-        {title}
-      </Text>
-      <Divider />
-
-      {children}
-    </View>
-  )
-}
-
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 12,
