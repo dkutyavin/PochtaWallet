@@ -26,6 +26,10 @@ export function PhoneVerify(props: RegistrationScreenProps<'PhoneVerify'>) {
 
     console.log({ response })
 
+    const authResponse = await networkAPI.login(user.login, user.password)
+
+    console.log(authResponse)
+
     register()
   }
 
@@ -43,6 +47,15 @@ export function PhoneVerify(props: RegistrationScreenProps<'PhoneVerify'>) {
         <Text style={{ textAlign: 'center' }} category="h3">
           Почти готово!
         </Text>
+
+        <Button
+          onPress={async () => {
+            const authResponse = await networkAPI.login(user.login, user.password)
+            console.log(authResponse)
+          }}
+        >
+          fire
+        </Button>
         <Text category="h5" style={{ textAlign: 'center', marginTop: 40 }}>
           Введите код из СМС
         </Text>
