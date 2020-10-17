@@ -5,5 +5,5 @@ import { useAppState } from './state'
 
 export function Root() {
   const { isRegistered } = useAppState()
-  return true ? <MainApp /> : <Registration />
+  return isRegistered ? <MainApp /> : <Registration />
 }
