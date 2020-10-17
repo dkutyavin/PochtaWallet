@@ -1,25 +1,34 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { MainScreenProps } from '../../types/navigation'
-import { Layout, Text, Divider, Button, Icon, ListItem, List } from '@ui-kitten/components'
-import { useAppState } from '../../app/state'
+import { Layout, Text, Divider, Icon, ListItem, List } from '@ui-kitten/components'
+import { usePassportFromStore } from '../../utils/useUserFromStore'
+import { SplashScreen } from '../../components/splash'
 
 export function Profile(props: MainScreenProps<'Profile'>) {
-  const { user } = useAppState()
+  const { passport, isLoading } = usePassportFromStore()
 
-  React.useEffect(() => {})
+  console.log({ passport })
+
+  if (isLoading) {
+    return <SplashScreen />
+  }
+
+  const user = passport?.payload?.vc?.credentialSubject
+
+  const [firstName, patronymic, lastName] = user.name.replace(/\s{2,}/, ' ').split(' ')
 
   return (
     <Layout style={styles.container}>
       <View style={styles.panel}>
-        <Text style={{ fontSize: 22, fontWeight: '500', marginBottom: 6, color: '#858585' }}>
+        <Text category="h4" style={{ fontWeight: '500', marginBottom: 6, color: '#858585' }}>
           Пользователь
         </Text>
         <Divider style={{ marginTop: 10 }} />
 
-        <DataItem label="Фамилия" info={user.lastName} />
-        <DataItem label="Имя" info={user.firstName} />
-        <DataItem label="Отчество" info={user.patronymic} />
+        <DataItem label="Фамилия" info={lastName} />
+        <DataItem label="Имя" info={firstName} />
+        <DataItem label="Отчество" info={patronymic} />
         <DataItem label="Прочие данные" info={user.otherInfo} />
       </View>
 
@@ -35,7 +44,6 @@ export function Profile(props: MainScreenProps<'Profile'>) {
   )
 }
 
-// TODO
 const ListAccessoriesShowcase = () => {
   const passport = [{ title: 'Выдан: Почта России', description: 'Тип документа: Паспорт РФ' }]
 
@@ -64,11 +72,9 @@ const styles = StyleSheet.create({
 
 export function DataItem({ label, info }: { label: string; info: string }) {
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
-      <Text style={{ color: '#858585', fontSize: 18, fontWeight: '300', textAlign: 'right' }}>
-        {label}
-      </Text>
-      <Text style={{ fontSize: 18, textAlign: 'right' }}>{info}</Text>
+    <View style={{ justifyContent: 'space-between', marginBottom: 10 }}>
+      <Text style={{ color: '#858585', fontSize: 18, fontWeight: '300' }}>{label}</Text>
+      <Text category="h5">{info || '--'}</Text>
     </View>
   )
 }

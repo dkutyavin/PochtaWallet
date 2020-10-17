@@ -25,6 +25,14 @@ export function setVC(vc: any) {
   return AsyncStore.setItem('passport', JSON.stringify(vc))
 }
 
+export function setUser(user: any) {
+  return AsyncStore.setItem('user', JSON.stringify(user))
+}
+
+export function getUser() {
+  return AsyncStore.getItem('user')
+}
+
 export function clear() {
   return AsyncStore.multiRemove(['token', 'key', 'passport'])
 }

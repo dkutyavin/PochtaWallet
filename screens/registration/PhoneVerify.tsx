@@ -28,6 +28,7 @@ export function PhoneVerify(props: RegistrationScreenProps<'PhoneVerify'>) {
     await networkAPI.login(user.login, user.password)
 
     storageAPI.setVC(passport)
+    storageAPI.setUser(user)
 
     register()
   }
