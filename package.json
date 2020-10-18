@@ -35,8 +35,7 @@
     "react-native-svg": "12.1.0",
     "react-native-typing-animation": "^0.1.7",
     "react-native-web": "~0.13.12",
-    "react-query": "^2.23.1",
-    "we-oauth2": "^1.1.7"
+    "react-query": "^2.23.1"
   },
   "devDependencies": {
     "@types/elliptic": "^6.4.12",
