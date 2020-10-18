@@ -1,4 +1,6 @@
 import * as React from 'react'
+import * as storageAPI from '../api/storage'
+import * as cryptoAPI from '../api/biometricCrypto/crypto'
 
 const AppStateContext = React.createContext<State>(null as any)
 
@@ -16,14 +18,18 @@ const defaultUser = {
 }
 
 function useStateValue() {
+  const status = useInitCheck()
+
   const [user, setUser] = React.useState<typeof defaultUser & Record<string, any>>(defaultUser)
   const [isRegistered, setIsRegistered] = React.useState(false)
-  const [searchPhrase, setSearchPhrase] = React.useState('')
-  const [selectedGoodId, setSelectedGoodId] = React.useState('')
-  const [currentMessage, setCurrentMessage] = React.useState('')
-  const [currentChat, setCurrentChat] = React.useState<
-    Array<{ type: 'client' | 'seller'; message: string }>
-  >([])
+
+  React.useEffect(() => {
+    if (status === 'auth') {
+      setIsRegistered(true)
+    } else {
+      setIsRegistered(false)
+    }
+  }, [status])
 
   const saveToUser = (newFields: Partial<typeof user>) => {
     setUser((prev) => ({ ...prev, ...newFields }))
@@ -34,14 +40,7 @@ function useStateValue() {
     register: () => setIsRegistered(true),
     user,
     saveToUser,
-    searchPhrase,
-    setSearchPhrase,
-    selectedGoodId,
-    setSelectedGoodId,
-    currentMessage,
-    setCurrentMessage,
-    currentChat,
-    setCurrentChat,
+    status,
   }
 
   return value
@@ -49,6 +48,35 @@ function useStateValue() {
 
 export function useAppState() {
   return React.useContext(AppStateContext)
+}
+
+function useInitCheck() {
+  const [status, setStatus] = React.useState<'check' | 'auth' | 'new'>('check')
+
+  React.useEffect(() => {
+    const effect = async () => {
+      const token = await storageAPI.getToken()
+      // const { publicKey } = await cryptoAPI.getPublicKeys()
+      // const key = await storageAPI.getKey()
+
+      // console.log({ token, publicKey, key })
+
+      if (token) {
+        setStatus('auth')
+      } else {
+        setStatus('new')
+      }
+
+      const pubkey = await cryptoAPI.getPublicKeys()
+      const passport = await storageAPI.getVC()
+
+      console.log({ token, passport, ...pubkey })
+    }
+
+    effect()
+  }, [])
+
+  return status
 }
 
 type State = ReturnType<typeof useStateValue>

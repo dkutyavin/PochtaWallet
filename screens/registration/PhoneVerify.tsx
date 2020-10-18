@@ -5,6 +5,7 @@ import { RegistrationScreenProps } from '../../types/navigation'
 import { Input } from '../../components/Input'
 import { useAppState } from '../../app/state'
 import { Layout, Text, Button, Spinner } from '@ui-kitten/components'
+import * as storageAPI from '../../api/storage'
 
 import * as networkAPI from '../../api/network'
 import * as biometricCryptoAPI from '../../api/biometricCrypto'
@@ -20,11 +21,14 @@ export function PhoneVerify(props: RegistrationScreenProps<'PhoneVerify'>) {
 
     setStatus('loading')
 
-    const response = await networkAPI.activateDID(signedChallenge, data.code)
+    const passport = await networkAPI.activateDID(signedChallenge, data.code)
 
-    saveToUser({ response: response })
+    saveToUser({ response: passport })
 
-    console.log({ response })
+    await networkAPI.login(user.login, user.password)
+
+    storageAPI.setVC(passport)
+    storageAPI.setUser(user)
 
     register()
   }
@@ -43,6 +47,7 @@ export function PhoneVerify(props: RegistrationScreenProps<'PhoneVerify'>) {
         <Text style={{ textAlign: 'center' }} category="h3">
           Почти готово!
         </Text>
+
         <Text category="h5" style={{ textAlign: 'center', marginTop: 40 }}>
           Введите код из СМС
         </Text>

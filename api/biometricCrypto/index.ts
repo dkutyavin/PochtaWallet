@@ -1,13 +1,14 @@
 import * as biometricAPI from './biometric'
 import * as cryptoAPI from './crypto'
+import * as storeAPI from '../storage'
 
-export async function getPublicKeyWithBiometric() {
+export async function generatePublicKeyWithBiometric() {
   try {
     await biometricAPI.auth({ promptMessage: 'Создать ключ' })
-    const key = cryptoAPI.generatePublicKey()
+    const key = await cryptoAPI.generatePublicKey()
     return key
   } catch (error) {
-    console.log(error)
+    console.warn(error)
     throw error
   }
 }
@@ -18,7 +19,17 @@ export async function signWithBiometricKey(message: string) {
     const sign = cryptoAPI.signMessage(message)
     return sign
   } catch (error) {
-    console.log(error)
+    console.warn(error)
     throw error
   }
+}
+
+export async function getPublicKey() {
+  return cryptoAPI.getPublicKeys()
+}
+
+export async function getPrivateKey() {
+  await biometricAPI.auth({ promptMessage: 'Показать данные' })
+  const key = await storeAPI.getKey()
+  return key
 }
