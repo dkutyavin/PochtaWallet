@@ -34,18 +34,6 @@ export function Documents(props: MainScreenProps<'Documents'>) {
 
   return (
     <Layout style={styles.container}>
-      <Text
-        style={{
-          fontWeight: '700',
-          fontSize: 28,
-          marginBottom: 20,
-          marginTop: 40,
-          color: '#858585',
-        }}
-      >
-        Доступные документы
-      </Text>
-
       <List
         style={{ backgroundColor: 'white' }}
         data={documents}
