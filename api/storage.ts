@@ -29,8 +29,9 @@ export function setUser(user: any) {
   return AsyncStore.setItem('user', JSON.stringify(user))
 }
 
-export function getUser() {
-  return AsyncStore.getItem('user')
+export async function getUser() {
+  const user = (await AsyncStore.getItem('user')) as string
+  return JSON.parse(user)
 }
 
 export function clear() {

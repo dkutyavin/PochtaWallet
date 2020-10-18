@@ -2,38 +2,41 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { MainScreenProps } from '../../../types/navigation'
 import { Layout } from '@ui-kitten/components'
-import { usePassportFromStore } from '../../../utils/useUserFromStore'
+import { userUserFromStore as useUserFromStore } from '../../../utils/useUserFromStore'
 import { SplashScreen } from '../../../components/splash'
 import { VCList } from './components/VCList'
 import { DataItem, Group } from './components'
+import { SignInfo } from './components/SignInfo'
+import { ScrollView } from 'react-native-gesture-handler'
+import { clear } from '../../../api/storage'
 
 export function Profile(props: MainScreenProps<'Profile'>) {
-  const { passport, isLoading } = usePassportFromStore()
+  const { user, isLoading } = useUserFromStore()
 
-  console.log({ passport })
+  console.log({ user })
 
   if (isLoading) {
     return <SplashScreen />
   }
 
-  const user = passport?.payload?.vc?.credentialSubject
-
-  const [firstName, patronymic, lastName] = user.name.replace(/\s{2,}/, ' ').split(' ')
+  console.log(user.lastName)
 
   return (
     <Layout style={styles.container}>
-      <Group title="Пользователь">
-        <DataItem label="Фамилия" info={lastName} />
-        <DataItem label="Имя" info={firstName} />
-        <DataItem label="Отчество" info={patronymic} />
-        <DataItem label="Прочие данные" info={user.otherInfo} />
-      </Group>
+      <ScrollView>
+        <Group title="Пользователь">
+          <DataItem label="Фамилия" info={user.lastName} />
+          <DataItem label="Имя" info={user.firstName} />
+          <DataItem label="Отчество" info={user.patronymic} />
+          <DataItem label="Прочие данные" info={user.otherInfo} />
+        </Group>
 
-      <Group title="Информация о подписи"></Group>
+        <SignInfo />
 
-      <Group title="Удостоверения личности">
-        <VCList />
-      </Group>
+        <Group title="Удостоверения личности">
+          <VCList />
+        </Group>
+      </ScrollView>
     </Layout>
   )
 }

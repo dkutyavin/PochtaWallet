@@ -1,16 +1,15 @@
 import * as React from 'react'
 import * as storageAPI from '../api/storage'
 
-export function usePassportFromStore() {
-  // TODO - replace passport with user
+export function userUserFromStore() {
   const [status, setStatus] = React.useState<Status>('reading')
-  const [passport, setPassport] = React.useState<any>()
+  const [user, setUser] = React.useState<any>()
 
   React.useEffect(() => {
     storageAPI
-      .getVC()
-      .then((vc) => {
-        setPassport(vc)
+      .getUser()
+      .then((user) => {
+        setUser(user)
         setStatus('ready')
       })
       .catch((error) => {
@@ -19,7 +18,7 @@ export function usePassportFromStore() {
       })
   }, [])
 
-  return { passport, isLoading: status === 'reading' }
+  return { user, isLoading: status === 'reading' }
 }
 
 type Status = 'reading' | 'error' | 'ready'
