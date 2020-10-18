@@ -26,11 +26,11 @@ export function Profile(props: MainScreenProps<'Profile'>) {
           <DataItem label="Прочие данные" info={user.otherInfo} />
         </Group>
 
-        <SignInfo />
-
         <Group title="Удостоверения личности">
           <VCList onPress={() => props.navigation.navigate('VCDetails')} />
         </Group>
+
+        <SignInfo />
       </ScrollView>
     </Layout>
   )

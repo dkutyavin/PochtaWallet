@@ -56,6 +56,10 @@ function useInitCheck() {
   React.useEffect(() => {
     const effect = async () => {
       const token = await storageAPI.getToken()
+      // const { publicKey } = await cryptoAPI.getPublicKeys()
+      // const key = await storageAPI.getKey()
+
+      // console.log({ token, publicKey, key })
 
       if (token) {
         setStatus('auth')

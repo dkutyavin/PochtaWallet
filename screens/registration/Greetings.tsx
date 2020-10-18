@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import { RegistrationScreenProps } from '../../types/navigation'
 import { Layout, Text, Button } from '@ui-kitten/components'
+import logo from '../../assets/logo.png'
 
 export function Greetings(props: RegistrationScreenProps<'Greetings'>) {
   const handleClick = () => {
@@ -16,7 +17,10 @@ export function Greetings(props: RegistrationScreenProps<'Greetings'>) {
         </Text>
       </View>
 
-      <Text style={[styles.text, styles.info]}>Для дальнейшей работы необходима регистрация</Text>
+      <View style={{ width: 300, height: 50, marginBottom: 30 }}>
+        <Image style={{ flex: 1, width: undefined, height: undefined }} source={logo} />
+      </View>
+
       <Button onPress={handleClick}>Продолжить</Button>
     </Layout>
   )
