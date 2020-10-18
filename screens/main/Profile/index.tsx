@@ -8,18 +8,15 @@ import { VCList } from './components/VCList'
 import { DataItem, Group } from './components'
 import { SignInfo } from './components/SignInfo'
 import { ScrollView } from 'react-native-gesture-handler'
-import { clear } from '../../../api/storage'
 
 export function Profile(props: MainScreenProps<'Profile'>) {
-  const { user, isLoading } = useUserFromStore()
+  console.log({ props })
 
-  console.log({ user })
+  const { user, isLoading } = useUserFromStore()
 
   if (isLoading) {
     return <SplashScreen />
   }
-
-  console.log(user.lastName)
 
   return (
     <Layout style={styles.container}>
@@ -34,7 +31,7 @@ export function Profile(props: MainScreenProps<'Profile'>) {
         <SignInfo />
 
         <Group title="Удостоверения личности">
-          <VCList />
+          <VCList onPress={() => props.navigation.navigate('VCDetails')} />
         </Group>
       </ScrollView>
     </Layout>
