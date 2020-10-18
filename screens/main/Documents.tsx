@@ -58,10 +58,7 @@ export function Documents(props: MainScreenProps<'Documents'>) {
 const DocumentCard = ({ item, onSign }: any) => {
   const { data, status, id, challenge } = item
 
-  const buyer = data.buyer.FIO
-  const seller = data.seller.FIO
-
-  const isToSign = status === 'AWAITING_SIGNATURE'
+  const signed = status !== 'AWAITING_SIGNATURE'
 
   const handleSign = () => {
     onSign(id, challenge)
@@ -69,14 +66,30 @@ const DocumentCard = ({ item, onSign }: any) => {
 
   return (
     <Card status="basic">
-      <Text>Продавец {seller}</Text>
-      <Text>Покупатель {buyer}</Text>
-      <Text>Цена {data.price}</Text>
-      <Text>Товар {data.productName}</Text>
-      <Text>Статус {isToSign ? 'Ожидает подписи' : 'Подписан'}</Text>
+      <DataItem label="Продавец" info={data?.seller?.FIO} />
+      <DataItem label="Продавец" info={data?.buyer?.FIO} />
+      <DataItem label="Цена" info={data?.price} />
+      <DataItem label="Товар" info={data?.productName} />
+      <DataItem label="Статус" info={<DocStatus signed={signed} />} />
 
-      {isToSign && <Button onPress={handleSign}>Подписать</Button>}
+      {!signed && <Button onPress={handleSign}>Подписать</Button>}
     </Card>
+  )
+}
+
+function DocStatus({ signed }: { signed: boolean }) {
+  if (signed) {
+    return <Text status="success">Подписан</Text>
+  }
+  return <Text status="info">Ожидает подписи</Text>
+}
+
+export function DataItem({ label, info }: { label: string; info: any }) {
+  return (
+    <View style={{ justifyContent: 'space-between', marginBottom: 10 }}>
+      <Text style={{ color: '#858585', fontSize: 18, fontWeight: '300' }}>{label}</Text>
+      <Text category="h6">{info || '--'}</Text>
+    </View>
   )
 }
 
