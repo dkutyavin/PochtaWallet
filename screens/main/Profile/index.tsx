@@ -53,6 +53,5 @@ export const styles = StyleSheet.create({
   title: {
     fontWeight: '500',
     marginBottom: 16,
-    color: '#858585',
   },
 })

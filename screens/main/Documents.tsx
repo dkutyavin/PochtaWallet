@@ -7,6 +7,9 @@ import * as biometricCryptoAPI from '../../api/biometricCrypto'
 
 export function Documents(props: MainScreenProps<'Documents'>) {
   const [documents, setDocuments] = React.useState<any[]>([])
+  const onChat = (messages: string) => {
+    props.navigation.navigate('DocumentChat', { data: messages })
+  }
 
   const signChallenge = async (id: string, challenge: string) => {
     const signedChallenge = await biometricCryptoAPI.signWithBiometricKey(challenge)
@@ -34,16 +37,20 @@ export function Documents(props: MainScreenProps<'Documents'>) {
 
   return (
     <Layout style={styles.container}>
+      <Text category="h3" style={{ marginTop: 30, marginBottom: 20 }}>
+        Договоры
+      </Text>
+
       <List
         style={{ backgroundColor: 'white' }}
         data={documents}
-        renderItem={(props) => <DocumentCard {...props} onSign={signChallenge} />}
+        renderItem={(props) => <DocumentCard {...props} onSign={signChallenge} onChat={onChat} />}
       />
     </Layout>
   )
 }
 
-const DocumentCard = ({ item, onSign }: any) => {
+const DocumentCard = ({ item, onSign, onChat, onContract }: any) => {
   const { data, status, id, challenge } = item
 
   const signed = status !== 'AWAITING_SIGNATURE'
@@ -53,12 +60,21 @@ const DocumentCard = ({ item, onSign }: any) => {
   }
 
   return (
-    <Card status="basic">
+    <Card style={{ marginTop: 10 }} status="info">
       <DataItem label="Продавец" info={data?.seller?.FIO} />
       <DataItem label="Продавец" info={data?.buyer?.FIO} />
       <DataItem label="Цена" info={data?.price} />
       <DataItem label="Товар" info={data?.productName} />
       <DataItem label="Статус" info={<DocStatus signed={signed} />} />
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Button size="small" status="basic" onPress={() => onChat(data.chatBody)}>
+          История чата
+        </Button>
+        <Button size="small" status="info" onPress={() => onChat(data.contractBody)}>
+          Договор
+        </Button>
+      </View>
 
       {!signed && <Button onPress={handleSign}>Подписать</Button>}
     </Card>

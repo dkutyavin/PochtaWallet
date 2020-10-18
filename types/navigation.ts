@@ -22,6 +22,8 @@ export type MainStackParamList = {
   VC: undefined
   VCDetails: undefined
   Documents: undefined
+  DocumentContract: { data: any }
+  DocumentChat: { data: any }
 }
 
 export type MainScreenProps<T extends keyof MainStackParamList> = {
