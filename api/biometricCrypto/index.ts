@@ -25,7 +25,7 @@ export async function signWithBiometricKey(message: string) {
 }
 
 export async function getPublicKey() {
-  return cryptoAPI.getPublicKeyInBase64()
+  return cryptoAPI.getPublicKeys()
 }
 
 export async function getPrivateKey() {

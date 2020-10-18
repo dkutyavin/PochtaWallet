@@ -64,7 +64,7 @@ function usePublicKey() {
   React.useEffect(() => {
     const showPublicEffect = async () => {
       try {
-        const publicKey = await biometricCryptoAPI.getPublicKey()
+        const { publicKey } = await biometricCryptoAPI.getPublicKey()
         setKey(publicKey)
         setStatus('ready')
       } catch (error) {

@@ -10,16 +10,18 @@ import {
 } from './endpoints'
 import { fetcher, fetchHandler } from './fetcher'
 import * as storageAPI from '../storage'
+import * as cryptoAPI from '../biometricCrypto/crypto'
 
 export async function issueDID(user: any) {
-  const res = await fetcher.post(ISSUE_DID_URL, { ...user, publicKey: PUBLIC_KEY })
+  const res = await fetcher.post(ISSUE_DID_URL, { ...user })
   return res
 }
 
 export async function activateDID(signedChallenge: string, activationCode: string) {
+  const { publicKey } = await cryptoAPI.getPublicKeys()
   const data = await fetcher.post(ACTIVATE_DID_URL, {
     activationCode,
-    publicKey: PUBLIC_KEY,
+    publicKey,
     signedChallenge,
   })
 
