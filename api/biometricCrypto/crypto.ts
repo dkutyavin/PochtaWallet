@@ -26,13 +26,17 @@ function getHashedBufferOfString(str: string) {
   return Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, str)
 }
 
-async function getPublicKeyInBase64() {
-  const key = await excludeKeyFromStore()
-
+export async function getPublicKeyInBase64() {
+  const publicKeyInHex = await getPublicKeyInHex()
   const PREFIX = '3056301006072a8648ce3d020106052b8104000a034200'
-  const publicKeyInHex = key.getPublic().encode('hex', false)
 
   return Buffer.from(`${PREFIX}${publicKeyInHex}`, 'hex').toString('base64')
+}
+
+export async function getPublicKeyInHex() {
+  const key = await excludeKeyFromStore()
+  const publicKeyInHex = key.getPublic().encode('hex', false)
+  return publicKeyInHex
 }
 
 async function excludeKeyFromStore() {

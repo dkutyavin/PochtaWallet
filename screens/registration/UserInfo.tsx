@@ -14,7 +14,7 @@ export function UserInfo(props: RegistrationScreenProps<'Greetings'>) {
   const { saveToUser, user } = useAppState()
 
   const onSubmit = async (data: Record<string, string>) => {
-    const biometricPublicKey = await biometricCryptoAPI.getPublicKeyWithBiometric()
+    const biometricPublicKey = await biometricCryptoAPI.generatePublicKeyWithBiometric()
 
     const newUser = { ...user, ...data, biometricPublicKey }
     const result = await networkAPI.issueDID(newUser)
