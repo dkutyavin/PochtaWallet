@@ -53,7 +53,7 @@ const DocumentCard = ({ item, onSign, onChat, onContract }: any) => {
       <DataItem label="Продавец" info={data?.buyer?.FIO} />
       <DataItem label="Цена" info={data?.price} />
       <DataItem label="Товар" info={data?.productName} />
-      <DataItem label="Статус" info={<DocStatus signed={signed} />} />
+      <DataItem label="Статус" info={<DocStatus status={status} />} />
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Button size="small" status="basic" onPress={() => onChat(data.chatBody)}>
@@ -73,10 +73,15 @@ const DocumentCard = ({ item, onSign, onChat, onContract }: any) => {
   )
 }
 
-function DocStatus({ signed }: { signed: boolean }) {
-  if (signed) {
+function DocStatus({ status }: { status: string }) {
+  if (status === 'ISSUED') {
     return <Text status="success">Подписан</Text>
   }
+
+  if (status === 'SIGNED') {
+    return <Text status="info">Подписан. Ожидает подписи других участников</Text>
+  }
+
   return <Text status="info">Ожидает подписи</Text>
 }
 
