@@ -68,7 +68,7 @@ function usePublicKey() {
         setKey(publicKey)
         setStatus('ready')
       } catch (error) {
-        console.log(error)
+        console.warn(error)
         setStatus('error')
       }
     }
@@ -90,7 +90,7 @@ function usePrivateKey() {
       setPrivateKey(key)
       setStatus('ready')
     } catch (error) {
-      console.log(error)
+      console.warn(error)
       setStatus('error')
     }
   }

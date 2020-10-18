@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { MainScreenProps } from '../../types/navigation'
-import { Divider, Icon, Layout, Text, Toggle } from '@ui-kitten/components'
+import { Divider, Layout, Text, Toggle } from '@ui-kitten/components'
 import { userUserFromStore } from '../../utils/useUserFromStore'
 import { usePassportFromStore } from '../../utils/usePassportFromStore'
 import { SplashScreen } from '../../components/splash'
@@ -24,7 +24,7 @@ export function VCDetails(props: MainScreenProps<'VCDetails'>) {
     <Layout style={styles.container}>
       <TopNavigation title="Профиль" onPress={props.navigation.goBack} />
 
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, marginTop: 20 }}>
         <DataItem label="Фамилия" info={user.lastName} />
         <DataItem label="Имя" info={user.firstName} />
         <DataItem label="Отчество" info={user.patronymic} />

@@ -10,8 +10,6 @@ import { SignInfo } from './components/SignInfo'
 import { ScrollView } from 'react-native-gesture-handler'
 
 export function Profile(props: MainScreenProps<'Profile'>) {
-  console.log({ props })
-
   const { user, isLoading } = useUserFromStore()
 
   if (isLoading) {

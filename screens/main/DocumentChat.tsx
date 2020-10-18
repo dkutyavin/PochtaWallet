@@ -5,8 +5,6 @@ import { Layout, Text } from '@ui-kitten/components'
 import { TopNavigation } from '../../components/top-navigator'
 
 export function DocumentChat(props: MainScreenProps<'DocumentChat'>) {
-  console.log(props)
-
   return (
     <Layout style={styles.container}>
       <TopNavigation title="Документы" onPress={props.navigation.goBack} />

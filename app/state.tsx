@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as storageAPI from '../api/storage'
+import * as cryptoAPI from '../api/biometricCrypto'
 
 const AppStateContext = React.createContext<State>(null as any)
 
@@ -53,13 +54,21 @@ function useInitCheck() {
   const [status, setStatus] = React.useState<'check' | 'auth' | 'new'>('check')
 
   React.useEffect(() => {
-    storageAPI.getToken().then((token) => {
+    const effect = async () => {
+      const pubkey = await cryptoAPI.getPublicKey()
+      const token = await storageAPI.getToken()
+      const passport = await storageAPI.getVC()
+
+      console.log({ token, passport, pubkey })
+
       if (token) {
         setStatus('auth')
       } else {
         setStatus('new')
       }
-    })
+    }
+
+    effect()
   }, [])
 
   return status

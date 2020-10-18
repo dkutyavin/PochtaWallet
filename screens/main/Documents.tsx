@@ -4,36 +4,24 @@ import { MainScreenProps } from '../../types/navigation'
 import { Button, Card, Icon, Layout, List, ListItem, Text } from '@ui-kitten/components'
 import * as networkAPI from '../../api/network'
 import * as biometricCryptoAPI from '../../api/biometricCrypto'
+import { useDocuments } from '../../utils/useDocuments'
+import { SplashScreen } from '../../components/splash'
 
 export function Documents(props: MainScreenProps<'Documents'>) {
-  const [documents, setDocuments] = React.useState<any[]>([])
+  const { isLoading, documents, refetch } = useDocuments()
   const onChat = (messages: string) => {
     props.navigation.navigate('DocumentChat', { data: messages })
+  }
+
+  if (isLoading) {
+    return <SplashScreen />
   }
 
   const signChallenge = async (id: string, challenge: string) => {
     const signedChallenge = await biometricCryptoAPI.signWithBiometricKey(challenge)
     await networkAPI.signVcChallenge(id, signedChallenge)
+    await refetch()
   }
-
-  React.useEffect(() => {
-    const effect = async () => {
-      const VCs = await networkAPI.getAllMyVCs()
-
-      const VCsDetails = await Promise.all(
-        VCs.map(async (vc: any) => {
-          const result = await networkAPI.getVcChallenge(vc.id)
-          return { ...result, ...vc }
-        })
-      )
-
-      setDocuments(VCsDetails)
-
-      console.log(VCsDetails)
-    }
-
-    effect()
-  }, [])
 
   return (
     <Layout style={styles.container}>
@@ -76,7 +64,11 @@ const DocumentCard = ({ item, onSign, onChat, onContract }: any) => {
         </Button>
       </View>
 
-      {!signed && <Button onPress={handleSign}>Подписать</Button>}
+      {!signed && (
+        <Button style={{ marginTop: 10 }} onPress={handleSign}>
+          Подписать
+        </Button>
+      )}
     </Card>
   )
 }
