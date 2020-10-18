@@ -1,19 +1,12 @@
 import React from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { MainScreenProps } from '../../types/navigation'
-import {
-  Divider,
-  Icon,
-  Layout,
-  Text,
-  Toggle,
-  TopNavigation,
-  TopNavigationAction,
-} from '@ui-kitten/components'
+import { Divider, Icon, Layout, Text, Toggle } from '@ui-kitten/components'
 import { userUserFromStore } from '../../utils/useUserFromStore'
 import { usePassportFromStore } from '../../utils/usePassportFromStore'
 import { SplashScreen } from '../../components/splash'
 import { PUBLIC_KEY } from '../../api/network/config'
+import { TopNavigation } from '../../components/top-navigator'
 
 export function VCDetails(props: MainScreenProps<'VCDetails'>) {
   const { user, isLoading: isUserLoading } = userUserFromStore()
@@ -29,11 +22,7 @@ export function VCDetails(props: MainScreenProps<'VCDetails'>) {
 
   return (
     <Layout style={styles.container}>
-      <TopNavigation
-        accessoryLeft={BackAction}
-        title={(evaProps) => <Text {...evaProps}>Профиль</Text>}
-        subtitle={(evaProps) => <Text {...evaProps}>Назад</Text>}
-      />
+      <TopNavigation title="Профиль" onPress={props.navigation.goBack} />
 
       <ScrollView style={{ flex: 1 }}>
         <DataItem label="Фамилия" info={user.lastName} />
@@ -84,9 +73,6 @@ function DataItem({ label, info }: { label: string; info: any }) {
     </View>
   )
 }
-
-const BackAction = () => <TopNavigationAction icon={BackIcon} />
-const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 
 const styles = StyleSheet.create({
   container: {
